@@ -65,7 +65,7 @@ union YYSTYPE
 {
 #line 10 "infix.y"
 
-int d;
+int d; // Union type for semantic value
 
 #line 71 "infix.tab.h"
 
