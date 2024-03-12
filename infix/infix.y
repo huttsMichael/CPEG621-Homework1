@@ -46,19 +46,19 @@ sub : sub '-' div
     ;
 
 div : div '/' term
-	{ $$ = $1 / $3; }
-	| term
-	{ $$ = $1; }
-	;
+    { $$ = $1 / $3; }
+    | term
+    { $$ = $1; }
+    ;
 
 term : NUMBER
-	{ $$ = $1; }
-     | '(' exp ')'
-	{ $$ = $2; }
-	;
+    { $$ = $1; }
+    | '(' exp ')'
+    { $$ = $2; }
+    ;
 
 %%
 int main() {
-	yyparse();
-	return 0;
+    yyparse();
+    return 0;
 }
