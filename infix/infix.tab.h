@@ -54,7 +54,9 @@ extern int yydebug;
     YYEOF = 0,                     /* "end of file"  */
     YYerror = 256,                 /* error  */
     YYUNDEF = 257,                 /* "invalid token"  */
-    NUMBER = 258                   /* NUMBER  */
+    NUMBER = 258,                  /* NUMBER  */
+    INC = 259,                     /* INC  */
+    DEC = 260                      /* DEC  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -67,7 +69,7 @@ union YYSTYPE
 
 int d; // Union type for semantic value
 
-#line 71 "infix.tab.h"
+#line 73 "infix.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

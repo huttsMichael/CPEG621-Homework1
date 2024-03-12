@@ -56,6 +56,20 @@ extern int lineNum; /* line number from cal.tab.c */
 	return '/'; 
 }
  
+"++" {
+    #ifdef DEBUG
+    printf("token '++' at line %d\n", lineNum);
+    #endif
+    return INC;
+}
+
+"--" {
+    #ifdef DEBUG
+    printf("token '--' at line %d\n", lineNum);
+    #endif
+    return DEC;
+}
+
 
 [0-9]+ {
 	#ifdef DEBUG

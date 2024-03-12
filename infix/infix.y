@@ -14,8 +14,10 @@ int d; // Union type for semantic value
 // need to choose token type from union above
 %token <d> NUMBER // Define token type for numbers
 %token '(' ')' // Define token types for '(' and ')'
+%token INC DEC
 %left '+' '-' // Specify left associativity for addition and subtraction
 %left '*' '/' // Specify left associativity for multiplication and division
+%right INC DEC // Specify left associativity for multiplication and division
 %type <d> exp factor sub div term // Specify types of non-terminal symbols
 %start cal // Specify starting symbol for parsing
 
@@ -27,23 +29,23 @@ cal : exp '\n'
     ;
 
 
-exp : exp '+' factor
+exp : exp '+' sub
     { $$ = $1 + $3; }
+    | sub
+    { $$ = $1; }
+    ;
+
+sub : sub '-' factor
+    { $$ = $1 - $3; }
     | factor
     { $$ = $1; }
     ;
 
-factor : factor '*' sub
+factor : factor '*' div
 	{ $$ = $1 * $3; }
-	| sub
+	| div
 	{ $$ = $1; }
 	;
-
-sub : sub '-' div
-    { $$ = $1 - $3; }
-    | div
-    { $$ = $1; }
-    ;
 
 div : div '/' term
     { $$ = $1 / $3; }
