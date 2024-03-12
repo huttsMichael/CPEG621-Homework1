@@ -21,8 +21,8 @@ int d; // Union type for semantic value
 %left '=' // Specify left associativity for addition and subtraction
 %left '+' '-' // Specify left associativity for addition and subtraction
 %left '*' '/' // Specify left associativity for multiplication and division
-%right INC DEC // Specify right associativity for unary operators
 %right POW // Specify right associativity for exponents (had to google this property)
+%right INC DEC // Specify right associativity for unary operators
 %type <d> exp // Specify types of non-terminal symbols
 %start cal // Specify starting symbol for parsing
 
