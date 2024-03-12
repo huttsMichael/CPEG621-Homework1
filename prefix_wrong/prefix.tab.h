@@ -67,9 +67,9 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 21 "prefix.y"
+#line 16 "prefix.y"
 
-int d; // Union type for semantic value
+    int d;
 
 #line 75 "prefix.tab.h"
 

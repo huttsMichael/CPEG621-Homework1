@@ -2,13 +2,20 @@
 #include <stdio.h>
 #include <ctype.h>
 #include <math.h>
+#include <string.h>
+
+#define STACK_SIZE 80
+#define LINE_SIZE 80
 int lineNum = 1;
 void yyerror(char *ps, ...) { /* need this to avoid link problem */
 	printf("%s\n", ps);
 }
 
 int sym[26]; // enough space to store all variables
-int equals_flag = 0; // flag to fix printing variables and using multiple in one operation
+int first_op = 1;
+char stack[LINE_SIZE][STACK_SIZE];
+int stack_index = 0;
+int jumped = 0;
 %}
 
 %union {
@@ -30,22 +37,24 @@ int d; // Union type for semantic value
 %%
 cal: 
 	exp '\n' { 
-		if (equals_flag) {
-			printf("=%d\n", sym[$1]); 
-			equals_flag=0; 
+		for (int i = stack_index-1; i >= 0; i--) {
+			printf("%s ", stack[i]);
+			memset(stack[i], '\0', STACK_SIZE);
 		}
-		else {
-			printf("=%d\n", $1); 
-		}
+		stack_index = 0;
+		first_op = 1;
+		jumped = 0;
+		printf("\n");
 	}
 	| cal exp '\n' { 
-		if (equals_flag) {
-			printf("=%d\n", sym[$2]); 
-			equals_flag=0; 
+		for (int i = stack_index-1; i >= 0; i--) {
+			printf("%s ", stack[i]);
+			memset(stack[i], '\0', STACK_SIZE);
 		}
-		else {
-			printf("=%d\n", $2); 
-		}
+		stack_index = 0;
+		first_op = 1;
+		jumped = 0;
+		printf("\n");
 	}	
     ;
 
@@ -54,21 +63,88 @@ exp:
 	NUMBER
 	| VAR { $$ = sym[$1]; }
 	| VAR '=' exp {
-		if (equals_flag) {
-			sym[$1] = sym[$3]; 
+
+	}
+	| exp '+' exp { 
+		if (first_op) {
+			sprintf(stack[stack_index++], "+ %d %d", $1, $3);
 		}
 		else {
-			sym[$1] = $3;
+			if (jumped) {
+				sprintf(stack[stack_index++], "+ %d", $1);
+				jumped = 0;
+			}
+			else {
+				sprintf(stack[stack_index++], "+ %d", $3);
+			}
 		}
-		equals_flag=1; 
+		first_op = 0;
 	}
-	| exp '+' exp { $$ = $1 + $3; }
-	| exp '-' exp { $$ = $1 - $3; }
-	| exp '*' exp { $$ = $1 * $3; }
-	| exp '/' exp { $$ = $1 / $3; }
-	| exp POW exp { $$ = (int)(pow($1,$3)); }
-	| exp INC { $$ = $1 + 1; }
-	| exp DEC { $$ = $1 - 1; }
+	| exp '-' exp { 
+		if (first_op) {
+			sprintf(stack[stack_index++], "- %d %d", $1, $3);
+		}
+		else {
+			if (jumped) {
+				sprintf(stack[stack_index++], "- %d", $1);
+				jumped = 0;
+			}
+			else {
+				sprintf(stack[stack_index++], "- %d", $3);
+			}
+		}
+		first_op = 0;
+	}
+	| exp '*' exp { 
+		if (first_op) {
+			sprintf(stack[stack_index++], "* %d %d", $1, $3);
+			jumped = 1;
+		}
+		else {
+			sprintf(stack[stack_index++], "* %d", $3);
+		}
+		first_op = 0;
+	}
+	| exp '/' exp { 
+		if (first_op) {
+			sprintf(stack[stack_index++], "/ %d %d", $1, $3);
+			jumped = 1;
+		}
+		else {
+			sprintf(stack[stack_index++], "/ %d", $3);
+		}
+		first_op = 0;
+	}
+	| exp POW exp { 
+		if (first_op) {
+			sprintf(stack[stack_index++], "** %d %d", $1, $3);
+			jumped = 1;
+		}
+		else {
+			sprintf(stack[stack_index++], "** %d", $3);
+		}
+		first_op = 0;
+	}
+	| exp INC { 
+		if (first_op) {
+			sprintf(stack[stack_index++], "++ %d", $1);
+			jumped = 1;
+		}
+		else {
+			sprintf(stack[stack_index++], "++ ");
+		}
+		first_op = 0;
+	}
+	| exp DEC { 
+		if (first_op) {
+			sprintf(stack[stack_index++], "-- %d", $1);
+			jumped = 1;
+		}
+		else {
+			sprintf(stack[stack_index++], "-- ");
+		}
+		first_op = 0;
+	}
 	| '(' exp ')' { $$ = $2; }
 	;
 
