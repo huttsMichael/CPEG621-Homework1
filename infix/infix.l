@@ -89,15 +89,15 @@ extern int lineNum; /* line number from cal.tab.c */
 	printf("token %s at line %d\n", yytext, lineNum); 
 	#endif
 	yylval.d = *yytext - 'a';
-	return VAR; // Return token for number
+	return VAR;
 }
 
 [0-9]+ {
 	#ifdef DEBUG
 	printf("token %s at line %d\n", yytext, lineNum); 
 	#endif
-	yylval.d = atoi(yytext); // Convert matched text to integer
-	return NUMBER; // Return token for number
+	yylval.d = atoi(yytext);
+	return NUMBER;
 }
 
 %%

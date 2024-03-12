@@ -2,13 +2,13 @@
 #include <stdio.h>
 #include <ctype.h>
 #include <math.h>
-int lineNum = 1; // Initialize line number
+int lineNum = 1;
 void yyerror(char *ps, ...) { /* need this to avoid link problem */
-	printf("%s\n", ps); // Print parsing error message
+	printf("%s\n", ps);
 }
 
 int sym[26]; // enough space to store all variables
-int equals_flag = 0;
+int equals_flag = 0; // flag to fix printing variables and using multiple in one operation
 %}
 
 %union {
