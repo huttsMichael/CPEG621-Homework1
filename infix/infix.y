@@ -18,7 +18,7 @@ int d; // Union type for semantic value
 %left '+' '-' // Specify left associativity for addition and subtraction
 %left '*' '/' // Specify left associativity for multiplication and division
 %right INC DEC // Specify left associativity for multiplication and division
-%type <d> exp factor sub div term // Specify types of non-terminal symbols
+%type <d> exp // Specify types of non-terminal symbols
 %start cal // Specify starting symbol for parsing
 
 %%
@@ -29,35 +29,16 @@ cal : exp '\n'
     ;
 
 
-exp : exp '+' sub
-    { $$ = $1 + $3; }
-    | sub
-    { $$ = $1; }
-    ;
-
-sub : sub '-' factor
-    { $$ = $1 - $3; }
-    | factor
-    { $$ = $1; }
-    ;
-
-factor : factor '*' div
-	{ $$ = $1 * $3; }
-	| div
-	{ $$ = $1; }
+exp:
+	NUMBER
+	| exp '+' exp { $$ = $1 + $3; }
+	| exp '-' exp { $$ = $1 - $3; }
+	| exp '*' exp { $$ = $1 * $3; }
+	| exp '/' exp { $$ = $1 / $3; }
+	| exp INC { $$ = $1 + 1; }
+	| exp DEC { $$ = $1 - 1; }
+	| '(' exp ')' { $$ = $2; }
 	;
-
-div : div '/' term
-    { $$ = $1 / $3; }
-    | term
-    { $$ = $1; }
-    ;
-
-term : NUMBER
-    { $$ = $1; }
-    | '(' exp ')'
-    { $$ = $2; }
-    ;
 
 %%
 int main() {
