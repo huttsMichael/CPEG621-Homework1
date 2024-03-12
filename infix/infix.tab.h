@@ -55,10 +55,10 @@ extern int yydebug;
     YYerror = 256,                 /* error  */
     YYUNDEF = 257,                 /* "invalid token"  */
     NUMBER = 258,                  /* NUMBER  */
-    INC = 259,                     /* INC  */
-    DEC = 260,                     /* DEC  */
-    POW = 261,                     /* POW  */
-    VAR = 262                      /* VAR  */
+    VAR = 259,                     /* VAR  */
+    INC = 260,                     /* INC  */
+    DEC = 261,                     /* DEC  */
+    POW = 262                      /* POW  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
