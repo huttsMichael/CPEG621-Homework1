@@ -8,6 +8,7 @@ void yyerror(char *ps, ...) { /* need this to avoid link problem */
 }
 
 int sym[26]; // enough space to store all variables
+int equals_flag = 0;
 %}
 
 %union {
@@ -28,15 +29,39 @@ int d; // Union type for semantic value
 
 %%
 cal: 
-	exp '\n' { printf("=%d\n", $1); }
-	| cal exp '\n' { printf("=%d\n", $2); }	
+	exp '\n' { 
+		if (equals_flag) {
+			printf("=%d\n", sym[$1]); 
+			equals_flag=0; 
+		}
+		else {
+			printf("=%d\n", $1); 
+		}
+	}
+	| cal exp '\n' { 
+		if (equals_flag) {
+			printf("=%d\n", sym[$2]); 
+			equals_flag=0; 
+		}
+		else {
+			printf("=%d\n", $2); 
+		}
+	}	
     ;
 
 
 exp:
 	NUMBER
 	| VAR { $$ = sym[$1]; }
-	| VAR '=' exp { sym[$1] = $3; }
+	| VAR '=' exp {
+		if (equals_flag) {
+			sym[$1] = sym[$3]; 
+		}
+		else {
+			sym[$1] = $3;
+		}
+		equals_flag=1; 
+	}
 	| exp '+' exp { $$ = $1 + $3; }
 	| exp '-' exp { $$ = $1 - $3; }
 	| exp '*' exp { $$ = $1 * $3; }

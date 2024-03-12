@@ -67,7 +67,7 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 13 "infix.y"
+#line 14 "infix.y"
 
 int d; // Union type for semantic value
 

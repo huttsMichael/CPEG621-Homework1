@@ -2,7 +2,7 @@
 #include <stdlib.h> /* for atoi call */
 #include "infix.tab.h" 
 
-#define DEBUG /* for debuging: print tokens and their line numbers */
+// #define DEBUG /* for debuging: print tokens and their line numbers */
 
 extern int lineNum; /* line number from cal.tab.c */
 
