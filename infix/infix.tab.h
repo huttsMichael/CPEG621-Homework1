@@ -57,7 +57,8 @@ extern int yydebug;
     NUMBER = 258,                  /* NUMBER  */
     INC = 259,                     /* INC  */
     DEC = 260,                     /* DEC  */
-    POW = 261                      /* POW  */
+    POW = 261,                     /* POW  */
+    VAR = 262                      /* VAR  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -66,11 +67,11 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 11 "infix.y"
+#line 13 "infix.y"
 
 int d; // Union type for semantic value
 
-#line 74 "infix.tab.h"
+#line 75 "infix.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

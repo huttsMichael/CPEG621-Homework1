@@ -77,6 +77,20 @@ extern int lineNum; /* line number from cal.tab.c */
     return POW;
 }
 
+"=" {
+    #ifdef DEBUG
+    printf("token '=' at line %d\n", lineNum);
+    #endif
+    return '=';
+}
+
+[a-z]+ {
+	#ifdef DEBUG
+	// printf("token %s at line %d\n", yytext, lineNum); 
+	#endif
+	yylval.d = *yytext - 'a';
+	return VAR; // Return token for number
+}
 
 [0-9]+ {
 	#ifdef DEBUG
@@ -88,5 +102,5 @@ extern int lineNum; /* line number from cal.tab.c */
 
 %%
 int yywrap() { /* need this to avoid link problem */
-	return 1; // Indicate end of input
+	return 1;
 }
