@@ -70,6 +70,13 @@ extern int lineNum; /* line number from cal.tab.c */
     return DEC;
 }
 
+"**" {
+    #ifdef DEBUG
+    printf("token '**' at line %d\n", lineNum);
+    #endif
+    return POW;
+}
+
 
 [0-9]+ {
 	#ifdef DEBUG

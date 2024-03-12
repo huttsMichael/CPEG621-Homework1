@@ -1,5 +1,5 @@
 infix: infix.tab.o lex.yy.o  
-	gcc -o infix lex.yy.o infix.tab.o
+	gcc -o infix lex.yy.o infix.tab.o -lm
 
 lex.yy.o: infix.l
 	flex infix.l; gcc -c lex.yy.c
