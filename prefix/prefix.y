@@ -63,7 +63,7 @@ exp:
 	NUMBER
 	| VAR { $$ = sym[$1]; }
 	| VAR '=' exp {
-
+		sprintf(stack[stack_index++], "= %c %d", $1 + 'a', $3);
 	}
 	| exp '+' exp { 
 		if (first_op) {
